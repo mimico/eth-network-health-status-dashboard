@@ -8,23 +8,7 @@ let fetchData = () => {
     return data;
   }//end fetchLastBlock
 
-  fetchLastBlock().then(response => {
-    /* we get a Promise, so we need to use a then method to
-    manipulate a response from that promise */
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error("Api did not respond");
-  }).then(response => {
-    /* process json for data required */
-    //console.log("response: " + response);
-    lastBlockMined = parseInt(response.result, 16); //parse for dec from hex
-    var access = document.getElementById("lastBlock");
-    access.innerHTML = "Last Block: " +  lastBlockMined;
-  })
-
   /* get the last ether price in btc and usd */
-
   let fetchEthPrice = () => {
     //{"status":"1","message":"OK","result":{"ethbtc":"0.03077","ethbtc_timestamp":"1549581188","ethusd":"104.62","ethusd_timestamp":"1549581181"}}
     let url = "https://api.etherscan.io/api?module=stats&action=ethprice&apikey=YourApiKeyToken";
@@ -32,25 +16,63 @@ let fetchData = () => {
     return data;
   }//end fetchLastBlock
 
-  fetchEthPrice().then(response => {
-    /* we get a Promise, so we need to use a then method to
-    manipulate a response from that promise */
+  /*get total supply of ether*/
+  let fetchTotalEther = () => {
+    //example: {"status":"1","message":"OK","result":"104764826749100000000000000"}
+    let url = "https://api.etherscan.io/api?module=stats&action=ethsupply&apikey=YourApiKeyToken";
+    let data =  fetch(url); //returns a promise.
+    return data;
+  }//end fetchtotalEther
+
+  fetchLastBlock().then(response => {
+    /* We get a Promise, so we need to use a then method to
+    /* manipulate a response from that promise
+     */
     if (response.ok) {
       return response.json();
     }
     throw new Error("Api did not respond");
   }).then(response => {
-    /* process json for data required */
-    console.log("result usd: " + response.result.ethusd);
-    console.log("result usd: " + response.result.ethbtc);
-    let price = document.getElementById("price");
-    price.innerHTML = response.result.ethusd + " @ " + response.result.ethbtc + " BTC/ETH";
-  })
+      let lastBlockMined = parseInt(response.result, 16); //parse for dec from hex
 
+      let access = document.getElementById("lastBlock");
+      access.innerHTML = "Last Block: " +  lastBlockMined;
+    });
 
+  fetchEthPrice().then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Api did not respond");
+  }).then(response => {
+      let ethPrice = response.result.ethbtc;
 
+      let priceUSD = document.getElementById("priceUSD");
+      priceUSD.innerHTML = response.result.ethusd;
+      let priceBTC = document.getElementById("priceBTC");
+      priceBTC.innerHTML = response.result.ethbtc;
+      at.innerHTML = " @ ";
+      btceth.innerHTML =  " BTC/ETH";
+    });
 
-  /* marketCap = totalEther * price */
+  fetchTotalEther().then(response => {
+    // we get a Promise, so we need to use a then method to
+    // manipulate a response from that promise
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Api did not respond");
+  }).then(response => {
+      let totalEther = response.result/10e17;
+
+      // marketCap = totalEther * price
+      let priceUSD = parseInt(document.getElementById("priceUSD").innerHTML);
+      let marketCap = totalEther * priceUSD;
+      document.getElementById("marCap").innerHTML = "Market cap of $" + (marketCap/10e8).toFixed(3) + " Billion";
+      console.log ((marketCap/10e8).toFixed(3));
+      // TO DO:
+      // https://stackoverflow.com/questions/28250680/how-do-i-access-previous-promise-results-in-a-then-chain
+    })
 
 }//end fetchData
 window.onload = fetchData();
