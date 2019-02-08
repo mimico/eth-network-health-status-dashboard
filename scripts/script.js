@@ -28,6 +28,7 @@ let fetchData = () => {
     /* We get a Promise, so we need to use a then method to
     /* manipulate a response from that promise
      */
+  //  console.log("okay? :",response.ok);
     if (response.ok) {
       return response.json();
     }
@@ -69,10 +70,30 @@ let fetchData = () => {
       let priceUSD = parseInt(document.getElementById("priceUSD").innerHTML);
       let marketCap = totalEther * priceUSD;
       document.getElementById("marCap").innerHTML = "Market cap of $" + (marketCap/10e8).toFixed(3) + " Billion";
-      console.log ((marketCap/10e8).toFixed(3));
+      //console.log ((marketCap/10e8).toFixed(3));
       // TO DO:
       // https://stackoverflow.com/questions/28250680/how-do-i-access-previous-promise-results-in-a-then-chain
     })
-
 }//end fetchData
+
 window.onload = fetchData();
+
+let searchClick  = () => {
+  let fetchAccountBalance = () => {
+    let address = document.getElementById("address").value;
+    console.log("address: ",address);
+    let url = "https://api.etherscan.io/api?module=account&action=balance&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&tag=latest&apikey=YourApiKeyToken";
+    console.log (url);
+    let data =  fetch(url); //returns a promise.
+    console.log ("data: ",data);
+    return data;
+  }
+  fetchAccountBalance().then(response => {
+    if (response.ok) {
+      return response.json();
+    }throw new Error("Api did not respond");
+  }).then(response => {
+      let balance = response.result/10e17;
+      console.log("balance: ", balance);
+  })
+}

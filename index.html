@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>ETHealth</title>
-  <meta name="author" content="Tiffany ANTOPOLSKI">
-  <meta name="description" content="a simple web application that displays a
-                                    Dashboard containing the overall health
-                                    and status of the Ethereum Network - based
-                                    on the last block mined.">
-  <link href="styles/style.css" rel="stylesheet">
+  <head>
+    <meta charset="utf-8">
+    <title>ETHealth</title>
+    <meta name="author" content="Tiffany ANTOPOLSKI">
+    <meta name="description" content="a simple web application that displays a
+                                      Dashboard containing the overall health
+                                      and status of the Ethereum Network - based
+                                      on the last block mined.">
+    <link href="styles/style.css" rel="stylesheet">
 
-  <script src="scripts/script.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-</head>
+    <script src="scripts/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  </head>
 
-<body>
+  <body>
+    <p id="blueBox">
+      <span id="marCap"></span>
+      <br>
+      <span id="priceUSD"></span><span id="at"></span><span id="priceBTC"></span><span id="btceth"></span>
+      <br>
+      <span id="lastBlock"></span>
+      <br>
+      <span id="marketCap"></span>
+    </p>
+    <p>
+      <form>
+        <input id="address" type="text" value="Search by Address">
+        <button type="button" id="search" onclick="searchClick()">Search</button>
 
-   <p id="blueBox">
-    <span id="marCap"></span>
-    <br>
-    <span id="priceUSD"></span><span id="at"></span><span id="priceBTC"></span><span id="btceth"></span>
-    <br>
-    <span id="lastBlock"></span>
-    <br>
-    <span id="marketCap"></span>
-   </p>
+      </form>
+    </p>
 
 
-
-</body>
-
+  </body>
 </html>
