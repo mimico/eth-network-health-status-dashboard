@@ -26,9 +26,12 @@ let fetchData = () => {
 
   let promises = [fetchLastBlock(), fetchEthPrice(), fetchTotalEther()];
   Promise.all(promises).then(responses => {
-    let ethUSDprice;
-    let lastBlockMined;
     let totalWei;
+    let totalEther;
+    let ethUSDprice;
+    let ethBTCprice;
+    let marketCap;
+    let lastBlockMined;
     for (let i = 0; i < responses.length; i++) {
       if (responses[i].ok) {
         responses[i].json().then(result => ({
@@ -36,25 +39,18 @@ let fetchData = () => {
         })).then (res => {
               switch(i) {
                 case 0:
-                  let access = document.getElementById("lastBlock");
                   lastBlockMined = parseInt(res.result.result, 16); //parse from hex to dec
-                  access.innerHTML = "Last Block:",lastBlockMined;
+                  document.getElementById("lastBlock").innerHTML = "Last Block: " + lastBlockMined;
                   break;
                 case 1:
-                  let priceUSD = document.getElementById("priceUSD");
-                  let priceBTC = document.getElementById("priceBTC");
                   ethUSDprice = res.result.result.ethusd;
-                  priceUSD.innerHTML = res.result.result.ethusd;
-                  priceBTC.innerHTML = res.result.result.ethbtc;
-                  at.innerHTML = " @ ";
-                  btceth.innerHTML =  " BTC/ETH";
+                  ethBTCprice = res.result.result.ethbtc;
+                  document.getElementById("price").innerHTML = ethUSDprice + " @ " + ethBTCprice + " BTC/ETH";
                   break;
                 case 2:
                   totalWei = res.result.result
-                  let totalEther = totalWei/10e17;
-                  //console.log("all: ",ethUSDprice,lastBlockMined,totalWei);
-                  //console.log("marketcap: ", totalEther*ethUSDprice);
-                  let marketCap = totalEther * ethUSDprice;
+                  totalEther = totalWei/10e17;
+                  marketCap = totalEther * ethUSDprice;
                   document.getElementById("marCap").innerHTML = "Market cap of $" + (marketCap/10e8).toFixed(3) + " Billion";
                   break;
               }
