@@ -66,7 +66,10 @@ let searchClick  = () => {
   let fetchAccountBalance = () => {
     let address = document.getElementById("address").value;
     console.log("address: ",address);
-    let url = "https://api.etherscan.io/api?module=account&action=balance&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&tag=latest&apikey=YourApiKeyToken";
+    //address = "0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a";
+    //let url = "https://api.etherscan.io/api?module=account&action=balance&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&tag=latest&apikey=YourApiKeyToken";
+    let url = `https://api.etherscan.io/api?module=account&action=balance&address=`+
+              `${address}&tag=latest&apikey=YourApiKeyToken`;
     console.log (url);
     let data =  fetch(url); //returns a promise.
     console.log ("data: ",data);
