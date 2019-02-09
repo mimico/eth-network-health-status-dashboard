@@ -26,12 +26,14 @@ let fetchData = () => {
 
   let promises = [fetchLastBlock(), fetchEthPrice(), fetchTotalEther()];
   Promise.all(promises).then(responses => {
+
     let totalWei;
     let totalEther;
     let ethUSDprice;
     let ethBTCprice;
     let marketCap;
     let lastBlockMined;
+
     for (let i = 0; i < responses.length; i++) {
       if (responses[i].ok) {
         responses[i].json().then(result => ({
@@ -62,6 +64,7 @@ let fetchData = () => {
 
 window.onload = fetchData();
 
+//update data every 5 seconds
 setInterval(() => {
   fetchData();
 }, 5000);
@@ -82,7 +85,6 @@ let searchClick  = () => {
      * 0x4380B82c696af09248B850f7BBA44A566263c4e2
      */
 
-
     let url = `https://api.etherscan.io/api?module=account&action=balance&address=`+
               `${address}&tag=latest&apikey=YourApiKeyToken`;
     console.log (url);
@@ -96,10 +98,7 @@ let searchClick  = () => {
     body.appendChild(p);
 
     let data =  fetch(url); //returns a promise.
-
     return data;
-
-
   }
 
   let address = document.getElementById("address").value;
@@ -121,4 +120,3 @@ let searchClick  = () => {
     })
   }
 }
-
