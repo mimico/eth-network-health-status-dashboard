@@ -3,28 +3,36 @@
   <head>
     <meta charset="utf-8">
     <title>ETHealth</title>
+    <link rel="shortcut icon" href="images/favicon.ico" />
     <meta name="author" content="Tiffany ANTOPOLSKI">
     <meta name="description" content="a simple web application that displays a
                                       Dashboard containing the overall health
                                       and status of the Ethereum Network - based
                                       on the last block mined.">
     <link href="styles/style.css" rel="stylesheet">
-
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <script src="scripts/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   </head>
 
   <body id="body">
-    <p id="blueBox">
+   <header>
+     <img src="images/EtherscanLogo-transparent-b-small.png" alt="Etherscan Logo">
+     <form id="form" class="searchbar">
+        <input id="address" type="text" placeholder="Search by address">
+        <button type="button" id="search" onclick="searchClick()">Search</button>
+      </form>
+    </header>
+    <br>
+    <div class="bluebox">
+    <p>
+      <img id="globe" src="images/globe-icon-white.svg" alt="White globe images">
       <span id="marCap"></span>
       <br>
       <span id="price"></span>
       <br>
       <span id="lastBlock"></span>
     </p>
-    <form>
-      <input id="address" type="text" placeholder="Search by address">
-      <button type="button" id="search" onclick="searchClick()">Search</button>
-    </form>
-  </body>
+    </div>
+ </body>
 </html>

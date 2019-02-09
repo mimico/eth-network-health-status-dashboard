@@ -42,18 +42,18 @@ let fetchData = () => {
               switch(i) {
                 case 0:
                   lastBlockMined = parseInt(res.result.result, 16); //parse from hex to dec
-                  document.getElementById("lastBlock").innerHTML = "Last Block: " + lastBlockMined;
+                  document.getElementById("lastBlock").innerHTML = "last block: " + lastBlockMined;
                   break;
                 case 1:
                   ethUSDprice = res.result.result.ethusd;
                   ethBTCprice = res.result.result.ethbtc;
-                  document.getElementById("price").innerHTML = ethUSDprice + " @ " + ethBTCprice + " BTC/ETH";
+                  document.getElementById("price").innerHTML = "$" + ethUSDprice + " @ " + ethBTCprice + " btc/eth";
                   break;
                 case 2:
                   totalWei = res.result.result
                   totalEther = totalWei/10e17;
                   marketCap = totalEther * ethUSDprice;
-                  document.getElementById("marCap").innerHTML = "Market cap of $" + (marketCap/10e8).toFixed(3) + " Billion";
+                  document.getElementById("marCap").innerHTML = "market cap of $" + (marketCap/10e8).toFixed(3) + " billion";
                   break;
               }
             });
@@ -73,8 +73,8 @@ let searchClick  = () => {
   //remove previous search result if it exists
   let oldSearch = document.getElementById("result");
   if (oldSearch)  {
-    let body = document.getElementById("body");
-    body.removeChild(oldSearch);
+    let form = document.getElementById("form");
+    form.removeChild(oldSearch);
   }
 
   let fetchAccountBalance = () => {
@@ -92,10 +92,10 @@ let searchClick  = () => {
     //add the address to the DOM
     let p = document.createElement("p");
     p.setAttribute("id", "result");
-    let node = document.createTextNode("address: " + address);
+    let node = document.createTextNode("Address: " + address);
     p.appendChild(node);
-    let body = document.getElementById("body");
-    body.appendChild(p);
+    let form = document.getElementById("form");
+    form.appendChild(p);
 
     let data =  fetch(url); //returns a promise.
     return data;
@@ -112,9 +112,9 @@ let searchClick  = () => {
 
         //add the balance to the DOM
         let p = document.getElementById("result");
-        p.innerHTML +=("<br>balance: " + balance + " ETH");
-        var body = document.getElementById("body");
-        body.appendChild(p);
+        p.innerHTML +=("<br>Balance: " + balance + " ETH");
+        let form = document.getElementById("form");
+        form.appendChild(p);
 
         document.getElementById("address").value = ""; //clear the input
     })

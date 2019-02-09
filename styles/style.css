@@ -1,0 +1,45 @@
+body{
+    font-family: 'Roboto'; /* ethereum typeface */
+    width: 80%;
+}
+
+.bluebox{
+  background: #3498db;
+  color: white;
+  width: 50%;
+  padding: 30px;
+}
+
+#globe {
+    width: 40px;
+    float: left;
+    padding: 10px;
+}
+
+#marCap {
+    font-variant: small-caps;
+}
+
+#lastBlock {
+    font-variant: small-caps;
+}
+
+#price {
+    font-variant: small-caps;
+}
+
+#search {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 2px 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.searchbar{
+  top: 20px;
+  position: absolute;
+  left: 550px;
+  padding: 10px;
+}
