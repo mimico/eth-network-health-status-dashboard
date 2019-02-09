@@ -62,6 +62,10 @@ let fetchData = () => {
 
 window.onload = fetchData();
 
+setInterval(() => {
+  fetchData();
+}, 5000);
+
 let searchClick  = () => {
   //remove previous search result if it exists
   let oldSearch = document.getElementById("result");
