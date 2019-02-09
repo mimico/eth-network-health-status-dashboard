@@ -63,24 +63,58 @@ let fetchData = () => {
 window.onload = fetchData();
 
 let searchClick  = () => {
+  //remove previous search result if it exists
+  let oldSearch = document.getElementById("result");
+  if (oldSearch)  {
+    let body = document.getElementById("body");
+    body.removeChild(oldSearch);
+  }
+
   let fetchAccountBalance = () => {
     let address = document.getElementById("address").value;
-    console.log("address: ",address);
-    //address = "0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a";
-    //let url = "https://api.etherscan.io/api?module=account&action=balance&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&tag=latest&apikey=YourApiKeyToken";
+    /* Test addresses:
+     * 0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a
+     * 0xfa106Cd43DD2730c09e2e08B00EC11EFb4D4Aa5a
+     * 0x4380B82c696af09248B850f7BBA44A566263c4e2
+     */
+
+
     let url = `https://api.etherscan.io/api?module=account&action=balance&address=`+
               `${address}&tag=latest&apikey=YourApiKeyToken`;
     console.log (url);
+
+    //add the address to the DOM
+    let p = document.createElement("p");
+    p.setAttribute("id", "result");
+    let node = document.createTextNode("address: " + address);
+    p.appendChild(node);
+    let body = document.getElementById("body");
+    body.appendChild(p);
+
     let data =  fetch(url); //returns a promise.
-    console.log ("data: ",data);
+
     return data;
+
+
   }
-  fetchAccountBalance().then(response => {
-    if (response.ok) {
-      return response.json();
-    }throw new Error("Api did not respond");
-  }).then(response => {
-      let balance = response.result/10e17;
-      console.log("balance: ", balance);
-  })
+
+  let address = document.getElementById("address").value;
+  if (address){
+    fetchAccountBalance().then(response => {
+      if (response.ok) {
+        return response.json();
+      }throw new Error("Api did not respond");
+    }).then(response => {
+        let balance = response.result/10e17;
+
+        //add the balance to the DOM
+        let p = document.getElementById("result");
+        p.innerHTML +=("<br>balance: " + balance + " ETH");
+        var body = document.getElementById("body");
+        body.appendChild(p);
+
+        document.getElementById("address").value = ""; //clear the input
+    })
+  }
 }
+
