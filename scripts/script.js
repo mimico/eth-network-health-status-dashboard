@@ -24,56 +24,44 @@ let fetchData = () => {
     return data;
   }//end fetchtotalEther
 
-  fetchLastBlock().then(response => {
-    /* We get a Promise, so we need to use a then method to
-    /* manipulate a response from that promise
-     */
-  //  console.log("okay? :",response.ok);
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error("Api did not respond");
-  }).then(response => {
-      let lastBlockMined = parseInt(response.result, 16); //parse for dec from hex
-
-      let access = document.getElementById("lastBlock");
-      access.innerHTML = "Last Block: " +  lastBlockMined;
-    });
-
-  fetchEthPrice().then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error("Api did not respond");
-  }).then(response => {
-      let ethPrice = response.result.ethbtc;
-
-      let priceUSD = document.getElementById("priceUSD");
-      priceUSD.innerHTML = response.result.ethusd;
-      let priceBTC = document.getElementById("priceBTC");
-      priceBTC.innerHTML = response.result.ethbtc;
-      at.innerHTML = " @ ";
-      btceth.innerHTML =  " BTC/ETH";
-    });
-
-  fetchTotalEther().then(response => {
-    // we get a Promise, so we need to use a then method to
-    // manipulate a response from that promise
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error("Api did not respond");
-  }).then(response => {
-      let totalEther = response.result/10e17;
-
-      // marketCap = totalEther * price
-      let priceUSD = parseInt(document.getElementById("priceUSD").innerHTML);
-      let marketCap = totalEther * priceUSD;
-      document.getElementById("marCap").innerHTML = "Market cap of $" + (marketCap/10e8).toFixed(3) + " Billion";
-      //console.log ((marketCap/10e8).toFixed(3));
-      // TO DO:
-      // https://stackoverflow.com/questions/28250680/how-do-i-access-previous-promise-results-in-a-then-chain
-    })
+  let promises = [fetchLastBlock(), fetchEthPrice(), fetchTotalEther()];
+  Promise.all(promises).then(responses => {
+    let ethUSDprice;
+    let lastBlockMined;
+    let totalWei;
+    for (let i = 0; i < responses.length; i++) {
+      if (responses[i].ok) {
+        responses[i].json().then(result => ({
+          result: result
+        })).then (res => {
+              switch(i) {
+                case 0:
+                  let access = document.getElementById("lastBlock");
+                  lastBlockMined = parseInt(res.result.result, 16); //parse from hex to dec
+                  access.innerHTML = "Last Block:",lastBlockMined;
+                  break;
+                case 1:
+                  let priceUSD = document.getElementById("priceUSD");
+                  let priceBTC = document.getElementById("priceBTC");
+                  ethUSDprice = res.result.result.ethusd;
+                  priceUSD.innerHTML = res.result.result.ethusd;
+                  priceBTC.innerHTML = res.result.result.ethbtc;
+                  at.innerHTML = " @ ";
+                  btceth.innerHTML =  " BTC/ETH";
+                  break;
+                case 2:
+                  totalWei = res.result.result
+                  let totalEther = totalWei/10e17;
+                  //console.log("all: ",ethUSDprice,lastBlockMined,totalWei);
+                  //console.log("marketcap: ", totalEther*ethUSDprice);
+                  let marketCap = totalEther * ethUSDprice;
+                  document.getElementById("marCap").innerHTML = "Market cap of $" + (marketCap/10e8).toFixed(3) + " Billion";
+                  break;
+              }
+            });
+        }
+     }
+  });
 }//end fetchData
 
 window.onload = fetchData();
