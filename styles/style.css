@@ -40,6 +40,6 @@ body{
 .searchbar{
   top: 20px;
   position: absolute;
-  left: 550px;
+  left: 50%;
   padding: 10px;
 }
