@@ -88,7 +88,12 @@ let searchClick  = () => {
     let form = document.getElementById("form");
     form.removeChild(oldSearch);
   }
-
+  //remove previous empty string message if it exists
+  let oops = document.getElementById("oops");
+  if (oops) {
+    let body = document.getElementById("body");
+    body.removeChild(oops);
+  }
   let fetchAccountBalance = () => {
     let address = document.getElementById("address").value;
     /* Test addresses:
@@ -130,5 +135,14 @@ let searchClick  = () => {
 
         document.getElementById("address").value = ""; //clear the input
     })
+  }
+  else {
+
+    let p = document.createElement("p");
+    p.setAttribute("id", "oops");
+    let node = document.createTextNode("Oops! You have entered an empty search string.");
+    p.appendChild(node);
+    let body = document.getElementById("body");
+    body.appendChild(p);
   }
 }
